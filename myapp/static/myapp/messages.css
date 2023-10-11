@@ -1,0 +1,17 @@
+.errorlist {
+    width: 100%;
+    background: red;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.info-messages {
+    text-align: center;
+    background-color: rgba(0, 128, 0, 0.2);
+    color:green;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    padding: 5px 0px;
+}

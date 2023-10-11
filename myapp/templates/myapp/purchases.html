@@ -1,0 +1,58 @@
+{% extends 'myapp/base.html' %}
+
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'myapp/messages.css' %}">
+{% endblock %}
+
+{% block body %}
+
+
+<div class="mt-[5rem] mx-8 shadow-lg p-6">
+    {% for message in messages %}
+        <p class = "errorlist">{{message}}</p>
+    {% endfor %}
+    <div>
+        <div class='flex justify-between'>
+            <h1 class="text-2xl font-bold my-4">My Purchases</h1>   
+        </div>
+        <div class="purchase-container flex flex-col gap-2">
+            <div class="purchase-items flex justify-between font-bold mt-4">
+                <div class="flex-1 text-center">
+                    Product Title
+                </div>
+                <div class="flex-1 text-center">
+                    Amount Paid
+                </div>
+                <div class="flex-1 text-center">
+                    Purchase Date
+                </div>
+                <div class="flex-1 text-center">
+                    Download Product
+                </div>
+            </div>
+            {% for order in orders %}
+                <div class="purchase-items flex justify-between gap-4 mt-6">
+                    <div class="flex-1 text-center font-semibold">
+                        {{order.product.name}}
+                    </div>
+                    <div class="flex-1 text-center font-semibold">
+                        ${{order.amount}}
+                    </div>
+                    <div class="flex-1 text-center">
+                        {{order.updated_on}}
+                    </div>
+                    <div class="flex-1 text-center">
+                        <a class="text-center bg-green-600 hover:bg-green-800 text-white font-semibold px-4 py-2 rounded-sm" 
+                        href="{{order.product.file.url}}" download>Download</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+    
+</div>
+
+
+{% endblock %}

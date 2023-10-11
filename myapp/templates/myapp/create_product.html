@@ -1,0 +1,55 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'myapp/form.css' %}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="w-[30rem] my-[6rem] mx-auto shadow-2xl py-4 px-5 rounded-md">
+        <div class="font-bold text-slate-700 text-2xl pb-4 text-center">
+            {% if update %}
+                Update Product Info
+            {% else %}
+                Create Product
+            {% endif %}
+        </div>
+        {% if error %}
+            <div class="bg-red-500 text-white font-semibold text-lg w-full text-center">
+                Invalid input data
+            </div>
+        {% endif %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in product_form %}
+                <div class="form-control {% if field.errors %} error {% endif %}">
+                    <p class="font-semibold text-xl my-2">
+                        {{field.label_tag}}
+                    </p>
+                    <div>
+                        {{field}}
+                    </div>
+                    <p>{{field.errors}}</p>
+                </div>
+            {% endfor %}
+            <button class="bg-green-600 px-4 py-2 text-white font-semibold mt-4 mr-6 rounded-md w-full hover:bg-green-800" 
+            type="submit">
+            {% if update %}
+                Update
+            {% else %}
+                Add
+            {% endif %}
+            </button>
+            {% if update %}
+            <a href="{% url 'myapp:deleteproduct' product.id %}">
+            <div class="w-full mt-4 text-center bg-red-600 hover:bg-red-800 px-4 py-2 text-white font-semibold rounded-md">
+                    Delete
+            </div>
+            </a>
+            {% endif %}
+        </form>
+    </div>
+
+{% endblock %}
+

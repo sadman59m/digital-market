@@ -1,0 +1,32 @@
+{% extends 'myapp/base.html' %}
+
+{% block body %}
+
+<div class="product-container flex flex-col flex-wrap mt-16 sm:justify-evenly sm:flex-row">
+
+    {% for product in products %}
+    <div class='product-card shadow-xl rounded-lg my-10 mx-auto gap-4 w-[450px] sm:w-[350px] sm:flex-shrink-0 sm:mx-10 flex flex-col justify-between'>
+        <div class="product-image h-[250px] w-full overflow-hidden my-2 flex">
+            <img class=" items-center w-full" src="{{ product.file.url }}" alt="">
+        </div>
+        <div class="product-body mx-5">
+            <div class="font-bold pb-1">
+                {{product.name}}
+            </div>
+            <div class=" pb-1">
+                {{product.description}}
+            </div>
+            <div class="font-bold text-green-700 pb-1">
+                ${{product.price|floatformat:2}}
+            </div>
+            <div class=" my-4">
+                <a class=" bg-green-600 text-white px-4 py-1 font-semibold" 
+                href="{% url 'myapp:detail' product.id %}">View Details</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+</div>
+
+{%endblock%}

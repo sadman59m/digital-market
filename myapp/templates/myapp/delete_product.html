@@ -1,0 +1,28 @@
+{% extends 'myapp/base.html' %}
+
+{% block body %}
+
+    <div class="my-20 p-5 flex flex-col items-center">
+        <div class="w-[350px] h-[250px] overflow-hidden flex items-center">
+            <img class=" object-cover w-full" src="{{product.file.url}}" alt="">
+        </div>
+        <div id="product-detail" class="p-4">
+            <div class = "text-3xl font-bold mb-4">{{product.name}}</div>
+            <div class="text-xl mb-4">{{product.description}}</div>
+            <div class="text-xl text-green-700 font-bold mb-4">${{product.price}}</div>
+            <form class="my-8" action="{% url 'myapp:deleteproduct' product.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="bg-red-500 hover:bg-red-800 text-white font-semibold text-xl mr-4
+                py-2 px-6 rounded-md">Confirm Delete</button>
+                <a class="bg-slate-700 hover:bg-slate-900 text-white font-semibold text-xl mr-4
+                py-2 px-6 rounded-md" href="{% url 'myapp:index' %}">Cancel</a>
+            </form>
+        </div>
+        
+    </div>
+
+{%endblock%}
+
+
+    
+    

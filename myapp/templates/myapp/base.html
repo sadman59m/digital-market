@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block css %} 
+      {% comment %} add css here {% endcomment %}
+    {% endblock %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+  </head>
+  <body id='body'>
+
+    <nav class="shadow-lg fixed left-0 w-full top-0 z-10 bg-white">
+      <div class="flex flex-wrap justify-between items-center py-4 mx-6">
+        <a class="flex items-center" href="{% url 'myapp:index' %}">
+          <img class="h-9 mr-3" src="https://cdn2.iconfinder.com/data/icons/Siena/256/shopping_basket%20red.png" alt="">
+          <span class="text-xl font-semibold">Digital Marketplace</span>
+        </a>
+        <div>
+          {% if user.is_authenticated %}
+            <a class="text-sm mr-6 hover:text-black {% if path == '/dashboard' %} text-black font-bold {% else %} text-gray-700 font-medium {% endif %}" href="{% url 'myapp:dashboard' %}">Dashboard</a>
+            <a class="text-sm mr-6 hover:text-black {% if path == '/sales' %} text-black font-bold {% else %} text-gray-700 font-medium {% endif %}" href="{% url 'myapp:sales' %}">Sales</a>
+            <a class="text-sm mr-6 hover:text-black {% if path == '/createproduct' %} text-black font-bold {% else %} text-gray-700 font-medium {% endif %}" href="{% url "myapp:createproduct" %}">Create Product</a>
+            <a class="text-sm mr-6 hover:text-black {% if path == '/purchases' %} text-black font-bold {% else %} text-gray-700 font-medium {% endif %}" href="{% url 'myapp:purchases' %}">My Purchase</a>
+            <form class="inline" action="/logout" method='POST'>
+              {% csrf_token %}
+              <button class="text-sm font-medium hover:text-black mr-6 text-gray-700">Logout</button>
+            </form>
+            {% else %}
+              <a class="text-sm mr-6 hover:text-black {% if path == '/login' %} text-black font-bold {% else %} text-gray-700 font-medium {% endif %}" href="{% url 'myapp:login' %}">Login</a>
+              <a class="text-sm mr-6 hover:text-black {% if path == '/register' %} text-black font-bold {% else %} text-gray-700 font-medium {% endif %}" href="{% url 'myapp:registration' %}">Register</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    {% block body %}
+      {% comment %} child content goes here {% endcomment %}
+    {% endblock %}
+  </body>
+</html>

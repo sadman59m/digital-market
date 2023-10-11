@@ -1,0 +1,53 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'myapp/registration_form.css' %}">
+    <link rel="stylesheet" href="{% static 'myapp/messages.css' %}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="w-[20rem] my-[8rem] mx-auto shadow-xl py-4 px-5 rounded-md">
+        <div class="font-bold text-slate-700 text-xl pb-4 text-center">
+            Login
+        </div>
+        {% for message in messages %}
+            <p class='info-messages'>{{message}}</p>
+        {% endfor %}
+        {% if error %}
+            <p class="custom-errorlist">Invalid login credentials</p>
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-control m-0 {% if field.errors %} error {% endif %}">
+                    {% comment %} <p class="font-semibold text-xl my-2">
+                        {{field.label_tag}}
+                    </p> {% endcomment %}
+                    <div>
+                        {{field}}
+                    </div>
+                    <p class="errorlist">
+                    {% for error in field.errors %} 
+                        {% if error == "The two password fields didn’t match." %}
+                            Passwords didn't match
+                        {% else %}
+                            {{error}}
+                        {% endif %}
+                    {% endfor %}
+                    </p>
+                </div>
+            {% endfor %}
+            <button class="bg-green-600 px-4 py-2 text-white font-semibold mt-2 mr-6 rounded-sm w-full hover:bg-green-800" 
+            type="submit">
+            Login
+            </button>
+            <p class="pt-4 text-center">
+                Dont have an accoutn? 
+                <a class="text-green-700 font-semibold" href="{% url 'myapp:registration' %}">Register</a> now.
+            </p>
+        </form>
+    </div>
+
+{% endblock %}
