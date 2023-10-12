@@ -40,6 +40,8 @@
             </div>
         {% endif %}
     </div>
-    {% include 'myapp/paginator.html' with page=products %}
+    {% if products|length > 0 %}
+        {% include 'myapp/paginator.html' with page=products %}
+    {% endif %}
 </div>
 {%endblock%}

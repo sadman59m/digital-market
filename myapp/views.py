@@ -22,13 +22,20 @@ def index_view(request):
         if len(search_item) == 0:
             return redirect('myapp:index')
         else:
-            search_product = Product.objects.filter(name__icontains=search_item)
-            return render(request, 'myapp/index.html', {"products": search_product})
+            products = Product.objects.filter(name__icontains=search_item)
+            paginator = Paginator(products, 4)
+            page = request.GET.get('page')
+            try:
+                products = paginator.page(page)
+            except PageNotAnInteger:
+                products = paginator.page(1)
+            except EmptyPage:
+                products = paginator.page(paginator.num_pages)
+            return render(request, 'myapp/index.html', {"products": products})
 
     products = Product.objects.all()
     paginator = Paginator(products, 4)
     page = request.GET.get('page')
-    print(page)
     try:
         products = paginator.page(page)
     except PageNotAnInteger:
