@@ -1,0 +1,15 @@
+<div class="mb-6 text-center text-lg">
+    <span>
+        {% if page.has_previous %}
+            <a class="font-semibold text-blue-800" href="{% url 'myapp:index' %}?page={{page.previous_page_number}}">Previous</a>
+        {% endif %}
+
+        <span class="mx-6 font-semibold">
+            Page {{page.number}} of {{page.paginator.num_pages}}
+        </span>
+
+        {% if page.has_next %}
+            <a class="font-semibold text-blue-800" href="{% url 'myapp:index' %}?page={{page.next_page_number}}">Next</a>
+        {% endif %}
+    </span>
+</div>

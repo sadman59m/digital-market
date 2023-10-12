@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.http import JsonResponse, HttpResponseNotFound, Http404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 from django.db.models import Sum
 import stripe, json
@@ -25,7 +26,15 @@ def index_view(request):
             return render(request, 'myapp/index.html', {"products": search_product})
 
     products = Product.objects.all()
-    print(len(products))
+    paginator = Paginator(products, 4)
+    page = request.GET.get('page')
+    print(page)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
     return render(request, 'myapp/index.html', {"products": products})
 
 

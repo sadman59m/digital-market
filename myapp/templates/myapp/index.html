@@ -13,7 +13,7 @@
     <div class="product-container flex flex-col flex-wrap sm:justify-evenly sm:flex-row">
         {% if products|length > 0 %}
             {% for product in products %}
-                <div class='product-card shadow-xl rounded-lg my-10 mx-auto gap-4 w-[450px] sm:w-[350px] sm:flex-shrink-0 sm:mx-10 flex flex-col justify-between'>
+                <div class='product-card shadow-xl rounded-lg my-5 mx-auto gap-4 w-[450px] sm:w-[350px] sm:flex-shrink-0 sm:mx-10 flex flex-col justify-between'>
                     <div class="product-image h-[250px] w-full overflow-hidden my-2 flex">
                         <img class=" items-center w-full" src="{{ product.file.url }}" alt="">
                     </div>
@@ -40,5 +40,6 @@
             </div>
         {% endif %}
     </div>
+    {% include 'myapp/paginator.html' with page=products %}
 </div>
 {%endblock%}
