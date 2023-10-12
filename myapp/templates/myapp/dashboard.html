@@ -13,40 +13,54 @@
         <p class = "errorlist">{{message}}</p>
     {% endfor %}
     <div>
-        <div class='flex justify-between'>
-            <h1 class="text-2xl font-bold my-4">My Products</h1>
+        <div class='flex justify-between flex-wrap'>
+            <a href="{% url 'myapp:dashboard' %}" class="text-2xl font-bold my-4">My Products</a>
+            <div class="search-bar  mt-[1rem] ">
+                <form class="search-form text-end " action="{% url 'myapp:dashboard' %}" method="POST">
+                    {% csrf_token %}
+                    <input class="border-2 border-slate-500 focus:border-blue-600 outline-0 px-3 py-1 mr-0 rounded-md w-[15rem] h-[2.4rem]" required type="text" name="search" placeholder="search product">
+                    <button class="search-btn px-3 py-1.5 rounded-md text-white font-semibold bg-slate-600 hover:bg-slate-800" type="submit">Search</button>
+                </form>
+            </div>
             <a class="my-4 px-4 py-2 bg-green-600 hover:bg-green-800 font-semibold text-lg text-white rounded-md" href="{% url 'myapp:createproduct' %}">New Product</a>
             
         </div>
-        <div class="product-container flex flex-col">
-            {% for product in products %}
-                <div class="flex justify-between px-4 py-4 shadow-lg my-4">
-                    <div class="product-info flex items-center gap-4 mr-6 flex-1">
-                        <div class="product-image h-[100px] w-[100px] overflow-hidden flex">
-                            <img class="w-full object-cover items-center" src="{{ product.file.url }}" alt="">
-                        </div>
-                        <div>
-                            <div class="my-2 text-xl font-bold">{{product.name}}</div>
-                            <div class="my-2 font-semibold">${{product.price}}</div>
-                            <div class="my-2">
-                                <a class="px-2 py-1 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-sm"
-                                 href="{% url 'myapp:updateproduct' product.id %}">
-                                 Update
-                                </a>
+        {% if products|length > 0 %}
+            <div class="product-container flex flex-col">
+                {% for product in products %}
+                    <div class="flex justify-between px-4 py-4 shadow-lg my-4">
+                        <div class="product-info flex items-center gap-4 mr-6 flex-1">
+                            <div class="product-image h-[100px] w-[100px] overflow-hidden flex">
+                                <img class="w-full object-cover items-center" src="{{ product.file.url }}" alt="">
+                            </div>
+                            <div>
+                                <div class="my-2 text-xl font-bold">{{product.name}}</div>
+                                <div class="my-2 font-semibold">${{product.price}}</div>
+                                <div class="my-2">
+                                    <a class="px-2 py-1 bg-green-600 hover:bg-green-800 text-white font-semibold rounded-sm"
+                                    href="{% url 'myapp:updateproduct' product.id %}">
+                                        Update
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                        <div class="flex flex-col justify-center gap-2 mr-6 flex-1 text-center">
+                            <p class="text-2xl font-bold text-green-700">${{product.total_sale_amount}}</p>
+                            <p class="">Total earnings</p>
+                        </div>
+                        <div class="flex flex-col justify-center gap-2 flex-1 text-center">
+                            <p class="text-2xl font-bold">{{product.total_sale}}</p>
+                            <p class="">Total sales</p>
+                        </div>
                     </div>
-                    <div class="flex flex-col justify-center gap-2 mr-6 flex-1 text-center">
-                        <p class="text-2xl font-bold text-green-700">${{product.total_sale_amount}}</p>
-                        <p class="">Total earnings</p>
-                    </div>
-                    <div class="flex flex-col justify-center gap-2 flex-1 text-center">
-                        <p class="text-2xl font-bold">{{product.total_sale}}</p>
-                        <p class="">Total sales</p>
-                    </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
         </div>
+        {% else %}
+        <div class="text-4xl font-bold mt-[10rem] text-center">
+            Product Not Found
+        </div>
+        {% endif %}
+        
         
     </div>
     

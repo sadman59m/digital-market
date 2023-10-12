@@ -2,31 +2,43 @@
 
 {% block body %}
 
-<div class="product-container flex flex-col flex-wrap mt-16 sm:justify-evenly sm:flex-row">
-
-    {% for product in products %}
-    <div class='product-card shadow-xl rounded-lg my-10 mx-auto gap-4 w-[450px] sm:w-[350px] sm:flex-shrink-0 sm:mx-10 flex flex-col justify-between'>
-        <div class="product-image h-[250px] w-full overflow-hidden my-2 flex">
-            <img class=" items-center w-full" src="{{ product.file.url }}" alt="">
-        </div>
-        <div class="product-body mx-5">
-            <div class="font-bold pb-1">
-                {{product.name}}
-            </div>
-            <div class=" pb-1">
-                {{product.description}}
-            </div>
-            <div class="font-bold text-green-700 pb-1">
-                ${{product.price|floatformat:2}}
-            </div>
-            <div class=" my-4">
-                <a class=" bg-green-600 text-white px-4 py-1 font-semibold" 
-                href="{% url 'myapp:detail' product.id %}">View Details</a>
-            </div>
-        </div>
+<div class="index-body flex flex-col flex-wrap mt-[5rem]">
+    <div class="search-bar mx-[6rem] mt-[1rem] ">
+        <form class="search-form text-end " action="{% url 'myapp:index' %}" method="POST">
+            {% csrf_token %}
+            <input class="border-2 border-slate-500 focus:border-blue-600 outline-0 px-3 py-1 mr-0 rounded-md w-[20rem] h-[2.4rem]" required type="text" name="search" placeholder="search product">
+            <button class="search-btn px-3 py-1.5 rounded-md text-white font-semibold bg-slate-600 hover:bg-slate-800" type="submit">Search</button>
+        </form>
     </div>
-{% endfor %}
-
+    <div class="product-container flex flex-col flex-wrap sm:justify-evenly sm:flex-row">
+        {% if products|length > 0 %}
+            {% for product in products %}
+                <div class='product-card shadow-xl rounded-lg my-10 mx-auto gap-4 w-[450px] sm:w-[350px] sm:flex-shrink-0 sm:mx-10 flex flex-col justify-between'>
+                    <div class="product-image h-[250px] w-full overflow-hidden my-2 flex">
+                        <img class=" items-center w-full" src="{{ product.file.url }}" alt="">
+                    </div>
+                    <div class="product-body mx-5">
+                        <div class="font-bold pb-1">
+                            {{product.name}}
+                        </div>
+                        <div class=" pb-1">
+                            {{product.description}}
+                        </div>
+                        <div class="font-bold text-green-700 pb-1">
+                            ${{product.price|floatformat:2}}
+                        </div>
+                        <div class=" my-4">
+                            <a class=" bg-green-600 text-white px-4 py-1 font-semibold" 
+                            href="{% url 'myapp:detail' product.id %}">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% else %}
+            <div class="text-4xl font-bold mt-[10rem]">
+                Product not found
+            </div>
+        {% endif %}
+    </div>
 </div>
-
 {%endblock%}

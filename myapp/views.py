@@ -16,7 +16,16 @@ from .forms import ProductForm, UserRegistrationForm, UserLoginForm
 # Create your views here.
 
 def index_view(request):
+    if request.method == 'POST':
+        search_item = request.POST['search']
+        if len(search_item) == 0:
+            return redirect('myapp:index')
+        else:
+            search_product = Product.objects.filter(name__icontains=search_item)
+            return render(request, 'myapp/index.html', {"products": search_product})
+
     products = Product.objects.all()
+    print(len(products))
     return render(request, 'myapp/index.html', {"products": products})
 
 
@@ -188,6 +197,15 @@ def delete_product_view(request, id):
 
 @login_required(login_url='myapp:login')
 def dashboard_view(request):
+    if request.method == 'POST':
+        search_item = request.POST['search']
+        if len(search_item) == 0:
+            return redirect('myapp:index')
+        else:
+            search_product = Product.objects.filter(name__icontains=search_item, seller=request.user)
+            return render(request, 'myapp/dashboard.html', 
+            {"products": search_product, "path": "/dashboard"})
+
     products = Product.objects.filter(seller=request.user)
     return render(request, 'myapp/dashboard.html', {"products": products, "path": "/dashboard"})
 
@@ -229,6 +247,7 @@ def user_login_view(request):
         print(request.GET['next'])
         messages.info(request, 'Please, log in to continue')
     return render(request, 'myapp/login_form.html', {"form": form_data, "path": '/login'})
+
 
 
 def user_logout_view(request):
